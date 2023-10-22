@@ -4,6 +4,7 @@ import { TaskController } from "./controller/TaskController";
 import { ITaskCreateSchema, ITaskSchema } from "./model/task";
 import { ApiError } from "./utility/Error/ApiError";
 import { ErrorCode } from "./utility/Error/ErrorCode";
+import { DefaultErrorHandler } from "./middleware/error-handler.middleware";
 
 dotenv.config();
 
@@ -34,22 +35,38 @@ app.post("/new", (req, res, next)=> {
 
         toDoList.insert(req.body);
 
-        res.status(201)
+        res.status(201).json(task);
 
     } catch (error:any) {
         next(error)
     }
 })
 
-app.put("/update", (req, res, next)=> {
+app.put("/update/:id", (req, res, next)=> {
     try {
         const task = req.body
+        const id = Number(req.params.id);
+
+        if(isNaN(id)) {
+            throw new ApiError(ErrorCode.BadRequest, "validation/failed", "Param is not a valid ID")
+        }
+
         const parse = ITaskSchema.safeParse(task);
         if(!parse.success) {
             throw new ApiError(ErrorCode.BadRequest, "validation/failed", "Not a valid Task")
         }
 
-        res.status(200)
+        if(!toDoList.exist(id)) {
+            throw new ApiError(ErrorCode.BadRequest, "validation/failed", "Id not found, Task doesn't exist")
+        }
+
+        if (id !== task.id) {
+            throw new ApiError(ErrorCode.NotFound, "validation/failed", "Id from JSON and Param are different")
+        }
+
+        toDoList.update(id, task);
+
+        res.status(200).json(task);
 
     } catch (error:any) {
         next(error)
@@ -58,22 +75,24 @@ app.put("/update", (req, res, next)=> {
 
 app.delete("/delete/:id", (req, res, next)=> {
     try {
-        const id = Number(req.params);
+        const id = Number(req.params.id);
         if(isNaN(id)) {
             throw new ApiError(ErrorCode.BadRequest, "validation/failed", "Not a valid Task")
         }
 
+        if(!toDoList.exist(id)) {
+            throw new ApiError(ErrorCode.NotFound, "validation/failed", "Id not found, Task doesn't exist")
+        }
+
         toDoList.delete(id);
 
-        res.status(200);
+        res.status(200).json(id);
 
     } catch (error:any) {
         next(error)
     }
 })
 
-app.get("/", (_req, res)=> {
-    res.status(400).send("Test is working !!");
-})
+app.use(DefaultErrorHandler);
 
 app.listen(port, ()=> console.log(`API running on port:${port}`));

@@ -11,8 +11,15 @@ export class TaskController {
     }
 
     private giveId(): number {
-        this.idCounter = this.idCounter++;
+        this.idCounter = this.idCounter + 1;
         return this.idCounter;
+    }
+
+    exist(id:number):boolean {
+        if(this.toDoList[id]) {
+            return true;
+        }
+        return false;
     }
 
     getAll():ToDoList {
@@ -22,14 +29,14 @@ export class TaskController {
     insert(task: ITaskCreate) {
         const newId = this.giveId();
         this.toDoList[newId] = {
-            id: this.giveId(),
+            id: newId,
             title: task.title,
             done: false,
         }
     }
 
-    update(task: ITask) {
-        this.toDoList[task.id] = task;
+    update(id: number, task: ITask) {
+        this.toDoList[id] = task;
     }
 
     delete(id:number) {
