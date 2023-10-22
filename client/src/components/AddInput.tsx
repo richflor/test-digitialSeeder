@@ -19,6 +19,8 @@ export function AddInput ({ add, updateList }: IAppProps) {
                 console.log(taskTitle)
                 await add(taskTitle)
                 updateList();
+            } else {
+                alert("Task must have a name")
             }
         }}>Submit</button>
     </div>

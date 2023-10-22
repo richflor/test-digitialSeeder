@@ -13,9 +13,10 @@ export function Task ({ data , updateTask, deleteTask, updateList}: IAppProps) {
         <p>{data.title}</p>
         <div className="buttons_task_container">
           <button className="update" onClick={async ()=> {
+              data.done = !data.done;
               updateTask(data).
               then(() => updateList());
-          }}>Update</button>
+          }}>{data.done ? "Done" : "Not Done"}</button>
           <button className="delete" onClick={async ()=> { 
               deleteTask(data)
               .then(() => updateList());

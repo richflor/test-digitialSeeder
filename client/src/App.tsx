@@ -52,7 +52,7 @@ function App() {
   }
 
   return (
-    <div>
+    <div className='main_container'>
       <h1>Todo List</h1>
       <AddInput add={addTask} updateList={getToDoList}/>
       <ul>

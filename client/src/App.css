@@ -1,3 +1,12 @@
+#root {
+    display: flex;
+    justify-content: center;
+}
+
+.main_container {
+    padding-top: 15vh;
+}
+
 .addTask_container {
     display: flex;
     justify-content: space-between;
