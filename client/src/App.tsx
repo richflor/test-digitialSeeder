@@ -1,8 +1,7 @@
 import { useState } from 'react'
 import './App.css'
 import { ToDoList } from '../../server/model/toDoList'
-import axios from 'axios'
-import { ITask, ITaskCreate } from '../../server/model/task'
+import { ITask } from '../../server/model/task'
 import { AddInput } from './components/AddInput'
 import { Task } from './components/Task'
 
@@ -12,22 +11,44 @@ function App() {
   const [toDoList, setToDoList] = useState<ToDoList>({})
 
   const getToDoList = async () => {
-    const response = await axios.get<any,ToDoList>(baseUri + "/all")
-    setToDoList(response);
+
+    await fetch(baseUri + "/all")
+    .then(response => response.json())
+    .then(data => setToDoList(data))
+    .catch(error => console.log(error));
+
+    console.log(toDoList)
   }
 
   const addTask = async (taskTitle:string) => {
-    const response = await axios.post<ITaskCreate,ITaskCreate>(baseUri + "/new", {
-      title:taskTitle
-    })
+    await fetch(baseUri + "/new", {
+        method: "POST",
+        body: JSON.stringify({
+            title: taskTitle
+        }),
+        headers: {
+            "Content-type": "application/json; charset=UTF-8"
+        }
+      })
+    .catch(error => console.log(error));
   }
 
   const updateTask = async (task:ITask) => {
-    const response = await axios.put<ITask,ITask>(baseUri + "/update/" + task.id, task)
+    await fetch(baseUri + "/update/" + task.id, {
+        method: "PUT",
+        body: JSON.stringify(task),
+        headers: {
+            "Content-type": "application/json; charset=UTF-8"
+        }
+      })
+    .catch(error => console.log(error));
   }
 
   const deleteTask = async (task:ITask) => {
-    const response = await axios.delete<any,number>(baseUri + "/delete/" + task.id)
+    await fetch(baseUri + "/delete/" + task.id, {
+      method: "DELETE",
+    })
+    .catch(error => console.log(error));
   }
 
   return (
@@ -35,13 +56,14 @@ function App() {
       <h1>Todo List</h1>
       <AddInput add={addTask} updateList={getToDoList}/>
       <ul>
-        {Object.values(toDoList).map(task => 
-          <Task 
+        {Object.values(toDoList).length > 0 ? Object.values(toDoList).map(task => 
+          <Task
+            key={task.id}
             data={task}
             updateTask={updateTask}
             deleteTask={deleteTask}
             updateList={getToDoList}
-          />)}
+          />) : ""}
       </ul>
     </div>
   )

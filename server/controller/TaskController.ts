@@ -23,6 +23,7 @@ export class TaskController {
     }
 
     getAll():ToDoList {
+        console.log(this.toDoList);
         return this.toDoList;
     }
 
@@ -33,13 +34,16 @@ export class TaskController {
             title: task.title,
             done: false,
         }
+        console.log(this.toDoList);
     }
 
     update(id: number, task: ITask) {
         this.toDoList[id] = task;
+        console.log(this.toDoList);
     }
 
     delete(id:number) {
         delete this.toDoList[id]
+        console.log(this.toDoList);
     }
 }

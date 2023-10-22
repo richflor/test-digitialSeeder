@@ -1,5 +1,4 @@
 import { ITask } from '../../../server/model/task';
-import { ToDoList } from '../../../server/model/toDoList';
 
 export interface IAppProps {
     data: ITask;
@@ -10,16 +9,19 @@ export interface IAppProps {
 
 export function Task ({ data , updateTask, deleteTask, updateList}: IAppProps) {
   return (
-    <li>
+    <li className='task_container'>
         <p>{data.title}</p>
-        <button className="update" onClick={async ()=> {
-            updateTask(data).
-            then(() => updateList());
-        }}>Update</button>
-        <button className="delete" onClick={async ()=> { 
-            deleteTask(data)
-            .then(() => updateList());
-        }}>Delete</button>
+        <div className="buttons_task_container">
+          <button className="update" onClick={async ()=> {
+              updateTask(data).
+              then(() => updateList());
+          }}>Update</button>
+          <button className="delete" onClick={async ()=> { 
+              deleteTask(data)
+              .then(() => updateList());
+          }}>Delete</button>          
+        </div>
+
     </li>
   );
 }

@@ -1,4 +1,4 @@
-import express, {Response, Request, NextFunction} from "express";
+import express from "express";
 import dotenv from 'dotenv';
 import { TaskController } from "./controller/TaskController";
 import { ITaskCreateSchema, ITaskSchema } from "./model/task";
@@ -13,7 +13,14 @@ const port = process.env.PORT || 3000;
 
 const toDoList = new TaskController();
 
-app.use(express.json())
+app.use(function(_req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*"),
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept"),
+    res.header("Access-Control-Allow-Methods: POST, GET, PUT, DELETE")
+    next()
+})
+
+app.use(express.json());
 
 app.get('/all', (_req, res, next)=> {
     try {
@@ -66,7 +73,7 @@ app.put("/update/:id", (req, res, next)=> {
 
         toDoList.update(id, task);
 
-        res.status(200).json(task);
+        res.json(task);
 
     } catch (error:any) {
         next(error)
@@ -86,7 +93,7 @@ app.delete("/delete/:id", (req, res, next)=> {
 
         toDoList.delete(id);
 
-        res.status(200).json(id);
+        res.json(id);
 
     } catch (error:any) {
         next(error)

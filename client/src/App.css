@@ -2,9 +2,23 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 200px;
+    width: 500px;
 }
 
 .addTask_container > input {
-    width: 100px;
+    width: 300px;
+}
+
+.task_container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 400px;
+}
+
+.buttons_task_container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 150px;
 }

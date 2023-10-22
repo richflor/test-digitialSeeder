@@ -16,8 +16,8 @@ export function AddInput ({ add, updateList }: IAppProps) {
           }}/>
         <button type="submit" onClick={ async () => {
             if(taskTitle) {
-                add(taskTitle)
-                .then(() => updateList);
+                console.log(taskTitle)
+                await add(taskTitle)
                 updateList();
             }
         }}>Submit</button>
