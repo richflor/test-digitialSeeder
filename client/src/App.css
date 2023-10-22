@@ -1,0 +1,10 @@
+.addTask_container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 200px;
+}
+
+.addTask_container > input {
+    width: 100px;
+}
