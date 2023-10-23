@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import { ApiError } from '../utility/Error/ApiError';
 import { ErrorCode } from '../utility/Error/ErrorCode';
 
-export const DefaultErrorHandler = async (error: any, req: Request, res: Response, next: NextFunction) => {
+export const DefaultErrorHandler = async (error: any, _req: Request, res: Response, _next: NextFunction) => {
 
   console.log(error);
   console.log(error.constructor.name);

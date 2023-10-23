@@ -6,7 +6,7 @@
   "scripts": {
     "dev-client": "vite",
     "dev-server": "vite-node server/server.ts",
-    "build-client": "tsc && vite build"
+    "build": "tsc && vite build"
   },
   "dependencies": {
     "cors": "^2.8.5",
